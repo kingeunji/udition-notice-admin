@@ -28,4 +28,13 @@ export default {
   margin: 0;
   padding: 0;
 }
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+#app {
+  height: 100%;
+}
 </style>
