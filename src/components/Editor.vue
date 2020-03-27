@@ -16,6 +16,7 @@ export default {
       content: "",
       editorOption: {
         // some quill options
+        //ytfgfhgfhggit
         modules: {}
       }
     };

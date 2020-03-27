@@ -122,6 +122,7 @@ export default {
   position: relative;
   background-color: #ebebeb;
   padding: 5%;
+
   width: 100vw;
   height: 100vh;
   .wrapper {
