@@ -1,12 +1,22 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <!-- <Main /> -->
+    <PostModifyDel />
   </div>
 </template>
+
+<script>
+// import Main from "./views/notice/editor/Main";
+import PostModifyDel from "../src/views/notice/postModityDel/PostModifyDel"
+
+export default {
+  name: "App",
+  components: {
+    // Main,
+    PostModifyDel
+  }
+};
+</script>
 
 <style lang="scss">
 * {
