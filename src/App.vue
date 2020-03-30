@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <Main />
+    <!-- <Main /> -->
+    <PostModifyDel />
   </div>
 </template>
 
 <script>
-import Main from "./views/notice/editor/Main";
+// import Main from "./views/notice/editor/Main";
+import PostModifyDel from "../src/views/notice/postModityDel/PostModifyDel"
 
 export default {
   name: "App",
   components: {
-    Main
+    // Main,
+    PostModifyDel
   }
 };
 </script>
