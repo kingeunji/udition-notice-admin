@@ -10,8 +10,7 @@
       :next-text="'>'"
       :container-class="'pagination'"
       :page-class="'page-item'"
-    >
-    </paginate>
+    ></paginate>
   </div>
 </template>
 
