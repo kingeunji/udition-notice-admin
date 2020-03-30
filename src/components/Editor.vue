@@ -11,20 +11,23 @@
 
 <script>
 export default {
+  props: {
+    text: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
-      content: "",
       editorOption: {
-        // some quill options
-        //ytfgfhgfhggit
         modules: {}
       }
     };
   },
   methods: {
     onEditorChange() {
-      // eslint-disable-next-line no-console
       console.log(this.content);
+      this.$emit("update-content", this.content);
     }
   }
 };

@@ -4,20 +4,17 @@ const instance = axios.create({
 });
 
 export const submitWoImg = {
-    list(title, type, tts) {
-        // eslint-disable-next-line no-console
-        console.log(title, type, tts)
-        var bodyFormData = new FormData();
-        bodyFormData.set('title', title)
-        bodyFormData.set('noticeType', type)
-        bodyFormData.set('tts', tts)
+    list(bodyFormData) {
+        // var bodyFormData = new FormData();
+        // bodyFormData.set('title', title)
+        // bodyFormData.set('noticeType', type)
+        // bodyFormData.set('tts', tts)
         return instance.get('api/notice/insert', bodyFormData)
     }
 }
 
 export const submitWImg = {
     list(title, type, img, tts) {
-        // eslint-disable-next-line no-console
         console.log(title, type, tts)
         var bodyFormData = new FormData();
         bodyFormData.set('title', title)

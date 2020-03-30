@@ -3,7 +3,7 @@
     <div class="wrapper">
       <div class="category">
         <div class="left-text">구분</div>
-        <el-select v-model="value" placeholder="::필수선택::">
+        <el-select v-model="value" placeholder="::필수선택::" @change="changeCategory(value)">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -14,10 +14,18 @@
       </div>
       <div class="title-wrapper">
         <div class="title">제목</div>
-        <input class="input-title" type="text" maxlength="50" />
+        <input
+          class="input-title"
+          type="text"
+          name="newtitle"
+          v-model="newTitle"
+          maxlength="50"
+          @keyup.enter="addTitle"
+        />
       </div>
       <!-- 에디터 컴포넌트 가져오기 -->
-      <Editor />
+      <Editor @update-content="onEditorChange" />
+      <!-- {{ content }} -->
       <!-- 하단 버튼 등장 -->
       <div id="app" class="button-wrapper">
         <button class="left-btn" @click="handle_cancle">취소</button>
@@ -55,7 +63,7 @@
 
 <script>
 import Editor from "../../../components/Editor";
-import { submitWoImg, submitWImg } from "../../../api/index";
+import { submitWoImg } from "../../../api/index";
 
 export default {
   components: {
@@ -63,22 +71,28 @@ export default {
   },
   data() {
     return {
+      categoryNum: "",
+      newTitle: "",
+      content: "",
       cancle_modal: false,
       save_modal: false,
       options: [
         {
           id: 1,
-          value: "notice",
+          name: "num",
+          value: 1,
           label: "공지사항"
         },
         {
           id: 2,
-          value: "event",
+          name: "num",
+          value: 2,
           label: "이벤트"
         },
         {
           id: 3,
-          value: "press-release",
+          name: "num",
+          value: 3,
           label: "보도자료"
         }
       ],
@@ -92,8 +106,6 @@ export default {
       } else {
         this.cancle_modal = false;
       }
-      // eslint-disable-next-line no-console
-      console.log("hello");
     },
     handle_save() {
       if (this.save_modal == false) {
@@ -103,15 +115,35 @@ export default {
       }
     },
     async goToSave() {
-      if (!this.list.img) {
-        const res = await submitWoImg.list("ccc", 1, "dddddd");
-        // eslint-disable-next-line no-console
-        console.log(res);
-      } else {
-        const res = await submitWImg.list("ccc", 1, "dddddd", "adafsdf");
-        // eslint-disable-next-line no-console
-        console.log(res);
-      }
+      // if (!this.list.img) {
+      var bodyFormData = new FormData();
+      bodyFormData.set("title", this.newTitle);
+      bodyFormData.set("noticeType", this.categoryNum);
+      bodyFormData.set("tts", this.content);
+      console.log("data", this.categoryNum, this.newTitle, this.content);
+      // console.log(bodyFormData);
+      const res = await submitWoImg.list(bodyFormData);
+      console.log(res);
+    },
+    // else {
+    //     const res = await submitWImg.list("ccc", 1, "dddddd", "adafsdf");
+    //     console.log(res);
+    //   }
+    // },
+    // async change_category(num) {
+    //   var bodyFormData = new FormData();
+    //   bodyFormData.append("noticeType", num);
+    //           // console.log(title, type, tts)
+    //     bodyFormData.append('title', title)
+    //     bodyFormData.append('tts', tts)
+    //   const res = await submitWoImg.list(bodyFormData)
+    // }
+    changeCategory(value) {
+      console.log("카테고리 번호: ", value);
+      this.categoryNum = value;
+    },
+    onEditorChange(content) {
+      this.content = content;
     }
   }
 };
@@ -219,7 +251,6 @@ export default {
     box-shadow: none !important;
   }
 }
-
 .editor-wrapper {
   height: 542px;
   background-color: #ffffff;
