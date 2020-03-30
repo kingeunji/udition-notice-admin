@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <Main />
   </div>
 </template>
+
+<script>
+import Main from "./views/notice/editor/Main";
+
+export default {
+  name: "App",
+  components: {
+    Main
+  }
+};
+</script>
 
 <style lang="scss">
 * {
@@ -20,5 +27,14 @@
   letter-spacing: normal;
   margin: 0;
   padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+#app {
+  height: 100%;
 }
 </style>
