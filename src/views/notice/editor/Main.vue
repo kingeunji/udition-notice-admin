@@ -211,8 +211,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: grey;
-    opacity: 0.7;
+    background-color: rgba(0, 0, 0, 0.7);
     position: absolute;
     top: 0;
     left: 0;

@@ -1,7 +1,7 @@
 <template>
   <div class="editor-wrapper">
     <quill-editor
-      ref="myTextEditor"
+      ref="myQuillEditor"
       @change="onEditorChange()"
       v-model="content"
       :config="editorOption"
