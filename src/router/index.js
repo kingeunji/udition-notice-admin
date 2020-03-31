@@ -6,6 +6,16 @@ import PostModifyDel from "../views/notice/postModityDel/PostModifyDel"
 Vue.use(VueRouter);
 
 // route 설정하기
+// export default new VueRouter({
+//     routes: [
+//         {
+//             path: '/',
+//             name: '',
+//             component:
+//         }
+//     ]
+// })
+
 export default new VueRouter({
     routes: [
         {
