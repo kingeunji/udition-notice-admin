@@ -8,16 +8,16 @@
           <div class="catagoty-container">
             <ul>
               <li>
-                <span @click="getcategory(0)">전체</span>
+                <span @click="getCategory(0)">전체</span>
               </li>
               <li>
-                <span @click="getcategory(1)">공지사항</span>
+                <span @click="getCategory(1)">공지사항</span>
               </li>
               <li>
-                <span @click="getcategory(2)">이벤트</span>
+                <span @click="getCategory(2)">이벤트</span>
               </li>
               <li>
-                <span @click="getcategory(3)">보도자료</span>
+                <span @click="getCategory(3)">보도자료</span>
               </li>
             </ul>
           </div>
@@ -37,29 +37,25 @@
                   <th>카테고리</th>
                   <th>제목</th>
                   <!-- <th>박수수</th>
-                  <th>신고수</th> -->
+                  <th>신고수</th>-->
                   <th></th>
                   <th></th>
                 </tr>
               </thead>
               <tbody class="table-list-wrapper">
-                <tr
-                  v-for="data in gotLists"
-                  :key="data.sortNo"
-                  class="table-list"
-                >
+                <tr v-for="data in gotLists" :key="data.sortNo" class="table-list">
                   <td>{{ data.createDate.slice(0, 10) }}</td>
                   <td>
                     {{
-                      data.noticeType === 0
-                        ? "전체"
-                        : data.noticeType === 1
-                        ? "공지사항"
-                        : data.noticeType === 2
-                        ? "이벤트"
-                        : data.noticeType === 3
-                        ? "보도자료"
-                        : ""
+                    data.noticeType === 0
+                    ? "전체"
+                    : data.noticeType === 1
+                    ? "공지사항"
+                    : data.noticeType === 2
+                    ? "이벤트"
+                    : data.noticeType === 3
+                    ? "보도자료"
+                    : ""
                     }}
                   </td>
                   <td>{{ data.title }}</td>
@@ -72,7 +68,11 @@
                 </tr>
               </tbody>
             </table>
-            <pagination @child="parents" :howManyLists="this.gotLists.length" />
+            <pagination
+              @child="parents"
+              :howManyLists="this.gotLists.length"
+              :pageSize="this.pageSize"
+            />
           </div>
         </form>
         <!-- pagination -->
@@ -218,13 +218,14 @@ export default {
       bodyFormData.append("pageSize", this.pageSize);
       const res = await listsPage.list(bodyFormData);
       this.gotLists = res.data.result;
+      console.log("전체 데이터", res);
       console.log("페이지 요청 사이즈", this.pageSize);
       console.log("실제로 들어오는 갯수", this.gotLists.length);
       // axios.post('', form )
       // API GET
     },
 
-    getcategory(num) {
+    getCategory(num) {
       this.category = num;
       // console.log("카테고리 분류", this.category);
     },

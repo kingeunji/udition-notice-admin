@@ -9,7 +9,6 @@ export const listsPage ={
     // list(pageNum){
         // const bodyFormData = new FormData
         // bodyFormData.set("requestPage", pageNum)
-        // // eslint-disable-next-line no-console
         // console.log("num", pageNum)
         return instance.post("api/notice/list", bodyFormData)
     }
