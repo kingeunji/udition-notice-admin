@@ -1,16 +1,31 @@
 <template>
   <div id="app">
+<<<<<<< HEAD
     <Main />
+=======
+    <!-- <Main /> -->
+    <PostModifyDel />
+>>>>>>> 376bb54aacb8ec629284beaf4832cb9a77167b99
   </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import Main from "./views/notice/editor/Main";
+=======
+// import Main from "./views/notice/editor/Main";
+import PostModifyDel from "../src/views/notice/postModityDel/PostModifyDel"
+>>>>>>> 376bb54aacb8ec629284beaf4832cb9a77167b99
 
 export default {
   name: "App",
   components: {
+<<<<<<< HEAD
     Main
+=======
+    // Main,
+    PostModifyDel
+>>>>>>> 376bb54aacb8ec629284beaf4832cb9a77167b99
   }
 };
 </script>

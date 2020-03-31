@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import axios from 'axios'
 const instance = axios.create({
     baseURL: "http://192.168.0.44:8081/",
@@ -24,3 +25,23 @@ export const submitWImg = {
         return instance.post('api/notice/insert', bodyFormData)
     }
 }
+=======
+import axios from "axios"
+
+const instance = axios.create({
+    baseURL:"http://192.168.0.44:8081/"
+})
+
+export const listsPage ={
+    list(bodyFormData){
+    // list(pageNum){
+        // const bodyFormData = new FormData
+        // bodyFormData.set("requestPage", pageNum)
+        // // eslint-disable-next-line no-console
+        // console.log("num", pageNum)
+        return instance.post("api/notice/list", bodyFormData)
+    }
+}
+
+
+>>>>>>> 376bb54aacb8ec629284beaf4832cb9a77167b99
