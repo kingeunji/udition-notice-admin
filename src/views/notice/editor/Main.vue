@@ -1,9 +1,14 @@
 <template>
   <div class="bg-color">
+    <router-view> </router-view>
     <div class="wrapper">
       <div class="category">
         <div class="left-text">구분</div>
-        <el-select v-model="value" placeholder="::필수선택::" @change="changeCategory(value)">
+        <el-select
+          v-model="value"
+          placeholder="::필수선택::"
+          @change="changeCategory(value)"
+        >
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -25,7 +30,7 @@
       </div>
       <!-- 에디터 컴포넌트 가져오기 -->
       <Editor @update-content="onEditorChange" />
-      <!-- {{ content }} -->
+      {{ content }}
       <!-- 하단 버튼 등장 -->
       <div id="app" class="button-wrapper">
         <button class="left-btn" @click="handle_cancle">취소</button>
@@ -255,4 +260,3 @@ export default {
   background-color: #ffffff;
 }
 </style>
-

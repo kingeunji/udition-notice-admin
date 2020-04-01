@@ -8,17 +8,26 @@
           <div class="catagoty-container">
             <ul>
               <li>
-                <span @click="getCategory(0)">전체</span>
+                <span @click="category = 0" :class="{ active: category == 0 }"
+                  >전체</span
+                >
               </li>
               <li>
-                <span @click="getCategory(1)">공지사항</span>
+                <span @click="category = 1" :class="{ active: category == 1 }"
+                  >공지사항</span
+                >
               </li>
               <li>
-                <span @click="getCategory(2)">이벤트</span>
+                <span @click="category = 2" :class="{ active: category == 2 }"
+                  >이벤트</span
+                >
               </li>
               <li>
-                <span @click="getCategory(3)">보도자료</span>
+                <span @click="category = 3" :class="{ active: category == 3 }"
+                  >보도자료</span
+                >
               </li>
+              <li class="write" @click="go"><button>작성하기</button></li>
             </ul>
           </div>
         </div>
@@ -33,45 +42,53 @@
               <thead>
                 <tr>
                   <th>날짜</th>
-                  <!-- <th>사용자 이름</th> -->
                   <th>카테고리</th>
                   <th>제목</th>
-                  <!-- <th>박수수</th>
-                  <th>신고수</th>-->
                   <th></th>
                   <th></th>
                 </tr>
               </thead>
               <tbody class="table-list-wrapper">
-                <tr v-for="data in gotLists" :key="data.sortNo" class="table-list">
+                <tr
+                  v-for="data in gotLists"
+                  :key="data.sortNo"
+                  class="table-list"
+                >
                   <td>{{ data.createDate.slice(0, 10) }}</td>
                   <td>
                     {{
-                    data.noticeType === 0
-                    ? "전체"
-                    : data.noticeType === 1
-                    ? "공지사항"
-                    : data.noticeType === 2
-                    ? "이벤트"
-                    : data.noticeType === 3
-                    ? "보도자료"
-                    : ""
+                      data.noticeType === 0
+                        ? "전체"
+                        : data.noticeType === 1
+                        ? "공지사항"
+                        : data.noticeType === 2
+                        ? "이벤트"
+                        : data.noticeType === 3
+                        ? "보도자료"
+                        : ""
                     }}
                   </td>
-                  <td>{{ data.title }}</td>
                   <td>
-                    <button>삭제</button>
+                    <span
+                      class="noticeTitle"
+                      @click="goNoicePage(data.noticeNo)"
+                      >{{ data.title }}</span
+                    >
                   </td>
                   <td>
-                    <button>수정</button>
+                    <button @click="delModi(true, data.noticeNo)">삭제</button>
+                  </td>
+                  <td>
+                    <button @click="delModi(false, data.noticeNo)">수정</button>
                   </td>
                 </tr>
               </tbody>
             </table>
+            <p class="presentPage">현재 페이지 :{{ pageNum + 1 }}</p>
             <pagination
               @child="parents"
-              :howManyLists="this.gotLists.length"
-              :pageSize="this.pageSize"
+              :howManyLists="this.PAGESIZE"
+              :totalNoticeCnt="this.totalNoticeCnt"
             />
           </div>
         </form>
@@ -84,8 +101,11 @@
 <script>
 import Pagination from "./components/Pagination";
 import { listsPage } from "../../../api/index";
+import { del } from "../../../api/index";
+import { modi } from "../../../api/index";
 
 export default {
+  name: "PostModifyDel",
   components: {
     // NoticeList
     Pagination
@@ -96,7 +116,8 @@ export default {
       pageNum: 0,
       gotLists: [],
       //페이지 요청 사이즈
-      pageSize: 5,
+      PAGESIZE: 10,
+      totalNoticeCnt: "",
       datas: [
         {
           id: 1,
@@ -192,8 +213,6 @@ export default {
     };
   },
   created() {
-    // this.clickCallback();
-    // eslint-disable-next-line no-console
     console.log(
       "처음 페이지 넘버",
       this.pageNum,
@@ -207,27 +226,30 @@ export default {
       this.fetchData();
     },
     category() {
+      //카테고리 변할 때 페이지 넘버 초기화(1페이지로)
+      this.pageNum = 0;
       this.fetchData();
     }
   },
   methods: {
     async fetchData() {
       const bodyFormData = new FormData();
+      // 검색요청 페이지
       bodyFormData.append("requestPage", this.pageNum);
+      // 카테고리 종류
       bodyFormData.append("noticeType", this.category);
-      bodyFormData.append("pageSize", this.pageSize);
+      // 페이징 요청 사이즈
+      bodyFormData.append("pageSize", this.PAGESIZE);
       const res = await listsPage.list(bodyFormData);
       this.gotLists = res.data.result;
+      // 마지막 offset
+      this.totalNoticeCnt = res.data.result[0].noticeCnt;
+      console.log("헤이헤이헤이", res.data.result[0].noticeCnt);
       console.log("전체 데이터", res);
-      console.log("페이지 요청 사이즈", this.pageSize);
+      console.log("페이지 요청 사이즈", this.PAGESIZE);
       console.log("실제로 들어오는 갯수", this.gotLists.length);
       // axios.post('', form )
       // API GET
-    },
-
-    getCategory(num) {
-      this.category = num;
-      // console.log("카테고리 분류", this.category);
     },
     parents(pageNum) {
       this.pageNum = pageNum - 1;
@@ -237,6 +259,34 @@ export default {
       //   "부모에 저장된 페이지 숫자",
       //   this.pageNum
       // );
+    },
+    go() {
+      console.log("hey");
+      this.$router.push("/main");
+    },
+    async delModi(mode, noticeNo) {
+      const bodyFormData = new FormData();
+      // 검색요청 페이지
+      bodyFormData.append("noticeNo", noticeNo);
+      console.log("mode", mode);
+      if (mode) {
+        if (confirm("정말 삭제하시겠습니까??") == true) {
+          await del.list(bodyFormData);
+          console.log("지워");
+          alert("게시물이 삭제되었습니다.");
+          this.fetchData();
+        } else {
+          console.log("안지워");
+          return false;
+        }
+      } else {
+        const res = await modi.list(bodyFormData);
+        console.log("modify", res);
+      }
+    },
+    goNoicePage(pageNumer) {
+      console.log("페이지 고유 번호", pageNumer);
+      this.$router.push("/main");
     }
   }
 };
@@ -265,13 +315,17 @@ export default {
             li {
               padding: 10px 0 10px 50px;
               span {
+                &.active {
+                  font-weight: bold;
+                  border-bottom: 1px solid #1f2125;
+                }
                 position: relative;
                 cursor: pointer;
                 &:after {
                   content: "";
                   left: 0;
                   position: absolute;
-                  bottom: -3px;
+                  bottom: -1px;
                   background: wheat;
                   height: 1px;
                   width: 0;
@@ -282,10 +336,25 @@ export default {
                   width: 100%;
                 }
               }
+              button {
+                font-size: 12px;
+                font-weight: bold;
+                border: 1px solid #1f2125;
+                background-color: wheat;
+                padding: 10px 20px;
+                cursor: pointer;
+                &:hover {
+                  background-color: #1f2125;
+                  color: wheat;
+                }
+              }
             }
           }
         }
       }
+    }
+    .presentPage {
+      padding: 10px 0;
     }
     .right-wrapper {
       width: 85vw;
@@ -304,41 +373,59 @@ export default {
               text-align: center;
               padding: 10px 0;
               &:hover {
-                background-color: wheat;
+                background-color: #1f2125;
+                color: aliceblue;
+                button {
+                  color: aliceblue;
+                }
               }
             }
             th,
             td {
               border-bottom: 1px solid #444444;
               padding: 15px;
+              span.noticeTitle {
+                position: relative;
+                cursor: pointer;
+                &:after {
+                  content: "";
+                  left: 0;
+                  position: absolute;
+                  bottom: -1px;
+                  background: wheat;
+                  height: 1px;
+                  width: 0;
+                  -webkit-transition: width 0.3s;
+                  transition: width 0.3s;
+                }
+                &:hover:after {
+                  width: 100%;
+                }
+              }
             }
             button {
+              position: relative;
               padding: 5px;
               border: none;
               cursor: pointer;
               background-color: transparent;
-              &:hover {
-                color: white;
+              font-size: 12px;
+              &:after {
+                content: "";
+                left: 0;
+                position: absolute;
+                bottom: -1px;
+                background: wheat;
+                height: 1px;
+                width: 0;
+                -webkit-transition: width 0.3s;
+                transition: width 0.3s;
+              }
+              &:hover:after {
+                width: 100%;
               }
             }
           }
-
-          // .pagination-container {
-          //   width: 100%;
-          //   padding: 20px 0;
-          //   display: flex;
-          //   align-items: center;
-          //   justify-content: center;
-
-          //   .pagination {
-          //     display: flex;
-
-          //     li.page-item {
-          //       padding: 0 100px;
-          //       width: 500px;
-          //     }
-          //   }
-          // }
         }
       }
     }
