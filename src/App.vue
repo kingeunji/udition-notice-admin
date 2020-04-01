@@ -1,24 +1,8 @@
 <template>
   <div id="app">
-    <!-- <Main /> -->
-    <!-- <Main /> -->
-    <PostModifyDel />
+    <router-view></router-view>
   </div>
 </template>
-
-<script>
-// import Main from "./views/notice/editor/Main";
-// import Main from "./views/notice/editor/Main";
-import PostModifyDel from "../src/views/notice/postModityDel/PostModifyDel";
-
-export default {
-  name: "App",
-  components: {
-    // Main,
-    PostModifyDel
-  }
-};
-</script>
 
 <style lang="scss">
 * {

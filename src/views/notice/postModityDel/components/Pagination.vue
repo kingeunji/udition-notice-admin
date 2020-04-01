@@ -2,14 +2,14 @@
   <div class="pagination-container">
     <paginate
       v-model="page"
-      :page-count="Math.ceil(this.howManyLists / 2)"
+      :page-count="lastPageNum"
       :page-range="21"
       :margin-pages="10"
       :click-handler="clickCallback"
       :prev-text="'<'"
       :next-text="'>'"
       :container-class="'pagination'"
-      :page-class="checked?'page-item-checked':'page-item'"
+      :page-class="checked ? 'page-item-checked' : 'page-item'"
       @click="getCheckedPage()"
     ></paginate>
   </div>
@@ -20,10 +20,11 @@ import Paginate from "vuejs-paginate";
 // import { listsPage } from "../../../../api/index";
 
 export default {
-  props: { howManyLists: Number, pageSize: Number },
+  // props => totalNoticeCnt =페이징 요청 사이즈 / howManyLists = 부모 PAGESIZE
+  props: { howManyLists: Number, totalNoticeCnt: Number },
   data() {
     return {
-      // 처음 요청하는 페이지 넘버코
+      // 처음 요청하는 페이지 넘버
       page: 1,
       pageLists: [],
       howManyPages: "",
@@ -38,15 +39,12 @@ export default {
       this.$emit("child", this.page);
       console.log(
         "부모한테서 내려온 전달받은 실제 들어오는 갯수",
-        this.howManyLists,
-        "부모한테서 내려온 전달받은 요청갯수",
-        this.pageSize
+        this.howManyLists
       );
-      console.log("계산 확인용", Math.ceil(this.howManyLists / this.pageSize));
-      this.howManyPages =
-        this.howManyPages === Math.ceil(this.howManyLists / 2)
-          ? this.this.howManyPages
-          : Math.ceil(this.howManyLists / 2);
+      console.log(
+        "페이지 넘버",
+        Math.ceil(this.totalNoticeCnt / this.howManyLists)
+      );
     },
     getCheckedPage() {
       this.checked = !this.checked;
@@ -68,6 +66,12 @@ export default {
   components: {
     // NoticeList
     Paginate
+  },
+  //그냥 ""안에 "lastPageNum"이렇게만 써주면 됐었다.
+  computed: {
+    lastPageNum() {
+      return Math.ceil(this.totalNoticeCnt / this.howManyLists);
+    }
   }
 };
 </script>
