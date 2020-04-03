@@ -9,8 +9,7 @@
       :prev-text="'<'"
       :next-text="'>'"
       :container-class="'pagination'"
-      :page-class="checked ? 'page-item-checked' : 'page-item'"
-      @click="getCheckedPage()"
+      :page-class="'page-item'"
     ></paginate>
   </div>
 </template>
@@ -21,14 +20,13 @@ import Paginate from "vuejs-paginate";
 
 export default {
   // props => totalNoticeCnt =페이징 요청 사이즈 / howManyLists = 부모 PAGESIZE
-  props: { howManyLists: Number, totalNoticeCnt: Number },
+  props: { howManyLists: Number, totalNoticeCnt: Number, category: Number },
   data() {
     return {
       // 처음 요청하는 페이지 넘버
       page: 1,
       pageLists: [],
-      howManyPages: "",
-      checked: false
+      howManyPages: ""
     };
   },
   methods: {
@@ -45,10 +43,6 @@ export default {
         "페이지 넘버",
         Math.ceil(this.totalNoticeCnt / this.howManyLists)
       );
-    },
-    getCheckedPage() {
-      this.checked = !this.checked;
-      console.log(this.checked);
     }
   },
 
@@ -72,6 +66,12 @@ export default {
     lastPageNum() {
       return Math.ceil(this.totalNoticeCnt / this.howManyLists);
     }
+  },
+  watch: {
+    category() {
+      //카테고리 변할 때 페이지 넘버 초기화(1페이지로)
+      this.page = 1;
+    }
   }
 };
 </script>
@@ -92,10 +92,11 @@ export default {
 .page-item {
   padding: 0 30px;
   width: 30px;
+  color: #aaaaaa;
 }
-.page-item-checked {
-  padding: 0 30px;
-  width: 30px;
-  border-bottom: 1px solid black;
+
+.active {
+  font-weight: 900;
+  color: #2e3032;
 }
 </style>
