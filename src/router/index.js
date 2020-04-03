@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Main from "../views/notice/editor/Main"
-import PostModifyDel from "../views/notice/postModityDel/PostModifyDel"
+import PostModifyDel from "../../src/views/notice/PostModifyDel/PostModifyDel"
 
 Vue.use(VueRouter);
 
@@ -11,10 +11,16 @@ export default new VueRouter({
         {
             path: '/main',
             component: Main
-        },
+        }
+        ,
         {
             path: '/',
             component: PostModifyDel
         }
+        // ,{
+        //     path:"/notice-datail:id"
+        //     component: noticeDatail
+        // }
     ]
 })
+

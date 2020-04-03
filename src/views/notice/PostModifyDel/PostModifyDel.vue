@@ -71,7 +71,7 @@
                   <td>
                     <span
                       class="noticeTitle"
-                      @click="goNoicePage(data.noticeNo)"
+                      @click="goNoticePage(data.noticeNo)"
                       >{{ data.title }}</span
                     >
                   </td>
@@ -89,6 +89,7 @@
               @child="parents"
               :howManyLists="this.PAGESIZE"
               :totalNoticeCnt="this.totalNoticeCnt"
+              :category="this.category"
             />
           </div>
         </form>
@@ -283,11 +284,12 @@ export default {
         const res = await modi.list(bodyFormData);
         console.log("modify", res);
       }
-    },
-    goNoicePage(pageNumer) {
-      console.log("페이지 고유 번호", pageNumer);
-      this.$router.push("/main");
     }
+    // ,
+    // goNoticePage(pageNumer) {
+    //   console.log("페이지 고유 번호", pageNumer);
+    //   this.$router.push(`/notice-datail:id=${pageNumer}`;
+    // }
   }
 };
 </script>
