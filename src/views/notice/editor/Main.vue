@@ -17,6 +17,9 @@
           ></el-option>
         </el-select>
       </div>
+      <!-- 썸네일 업로드 등장-->
+      <ImgUpload @update-thumbnailImg="onFileSelected" />
+      <!-- 제목 input field 등장 -->
       <div class="title-wrapper">
         <div class="title">제목</div>
         <input
@@ -69,16 +72,22 @@
 <script>
 import Editor from "../../../components/Editor";
 import { submitWoImg } from "../../../api/index";
+import { submitWImg } from "../../../api/index";
+import ImgUpload from "../../../components/ImgUpload";
+// import { submitWImg2 } from "../../../api/index";
 
 export default {
   components: {
-    Editor
+    Editor,
+    ImgUpload
   },
   data() {
     return {
       categoryNum: "",
+      selectedFile: "",
       newTitle: "",
       content: "",
+      image: "",
       cancle_modal: false,
       save_modal: false,
       options: [
@@ -120,35 +129,51 @@ export default {
       }
     },
     async goToSave() {
-      // if (!this.list.img) {
-      var bodyFormData = new FormData();
-      bodyFormData.set("title", this.newTitle);
-      bodyFormData.set("noticeType", this.categoryNum);
-      bodyFormData.set("tts", this.content);
-      console.log("data", this.categoryNum, this.newTitle, this.content);
-      // console.log(bodyFormData);
-      const res = await submitWoImg.list(bodyFormData);
-      console.log(res);
+      if (!this.selectedFile) {
+        var bodyFormData = new FormData();
+        bodyFormData.append("noticeType", this.categoryNum);
+        bodyFormData.append("title", this.newTitle);
+        bodyFormData.append("tts", this.content);
+        console.log(this.categoryNum, this.newTitle, this.content);
+        const res = await submitWoImg.list(bodyFormData);
+        console.log("이미지 없다", res);
+      } else {
+        // 썸네일 이미지 보내기
+        var bFDWI = new FormData();
+        bFDWI.append("downloadFile", this.selectedFile);
+        console.log("이미지 이름: ", this.selectedFile);
+        console.log("이미지야 들어와라");
+        const res = await submitWImg.list(bFDWI);
+        console.log("이미지 정보: ", res.data.result.image);
+
+        // 썸네일 외 데이터 보내기
+        var bodyFormData2 = new FormData();
+        bodyFormData2.append("noticeType", this.categoryNum);
+        bodyFormData2.append("title", this.newTitle);
+        bodyFormData2.append("tts", this.content);
+        let image = res.data.result.image;
+        bodyFormData2.append("image", image);
+        console.log(
+          "썸네일 외 데이터: ",
+          this.categoryNum,
+          this.newTitle,
+          this.content,
+          this.image
+        );
+        const res2 = await submitWImg.list2(bodyFormData2);
+        console.log("모든 데이터 끝!", res2);
+      }
     },
-    // else {
-    //     const res = await submitWImg.list("ccc", 1, "dddddd", "adafsdf");
-    //     console.log(res);
-    //   }
-    // },
-    // async change_category(num) {
-    //   var bodyFormData = new FormData();
-    //   bodyFormData.append("noticeType", num);
-    //           // console.log(title, type, tts)
-    //     bodyFormData.append('title', title)
-    //     bodyFormData.append('tts', tts)
-    //   const res = await submitWoImg.list(bodyFormData)
-    // }
+
     changeCategory(value) {
       console.log("카테고리 번호: ", value);
       this.categoryNum = value;
     },
     onEditorChange(content) {
       this.content = content;
+    },
+    onFileSelected(selectedFile) {
+      this.selectedFile = selectedFile;
     }
   }
 };
@@ -248,7 +273,7 @@ export default {
     margin: 0 100px 0 20px;
   }
   .input-title {
-    width: 600px;
+    width: 300px;
     height: 40px;
     padding-left: 10px;
     border-radius: 5px;

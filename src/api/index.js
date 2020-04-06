@@ -5,28 +5,26 @@ const instance = axios.create({
 
 export const submitWoImg = {
     list(bodyFormData) {
-        // var bodyFormData = new FormData();
-        // bodyFormData.set('title', title)
-        // bodyFormData.set('noticeType', type)
-        // bodyFormData.set('tts', tts)
-        return instance.get('api/notice/insert', bodyFormData)
-    }
-}
-
-export const submitWImg = {
-    list(title, type, img, tts) {
-        console.log(title, type, tts)
-        var bodyFormData = new FormData();
-        bodyFormData.set('title', title)
-        bodyFormData.set('noticeType', type)
-        bodyFormData.set('downloadFile', img)
-        bodyFormData.set('tts', tts)
+        console.log(bodyFormData)
         return instance.post('api/notice/insert', bodyFormData)
     }
 }
 
-
-
+export const submitWImg = {
+    list2(bodyFormData2) {
+        console.log(bodyFormData2)
+        return instance.post('api/notice/insert', bodyFormData2)
+    },
+    list(bFDWI) {
+        console.log(bFDWI)
+        return instance.post('api/notice/saveFile', bFDWI, {
+            headers: {
+            'Content-Type': 'multipart/form-data'
+            }
+            
+        })
+    }
+}
 
 export const listsPage ={
     list(bodyFormData){
@@ -51,7 +49,5 @@ export const modi ={
         return instance.post("api/notice/update", bodyFormData)
     }
 }
-
-
 
 
