@@ -37,3 +37,18 @@ export const listsPage ={
     }
 }
 
+export const del ={
+    list(bodyFormData){
+    
+        return instance.post("api/notice/delete", bodyFormData)
+    }
+}
+
+export const modi ={
+    list(bodyFormData){
+    
+        return instance.post("api/notice/update", bodyFormData)
+    }
+}
+
+
