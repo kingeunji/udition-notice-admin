@@ -31,9 +31,23 @@ export const listsPage ={
     // list(pageNum){
         // const bodyFormData = new FormData
         // bodyFormData.set("requestPage", pageNum)
-        // // eslint-disable-next-line no-console
         // console.log("num", pageNum)
         return instance.post("api/notice/list", bodyFormData)
     }
 }
+
+export const del ={
+    list(bodyFormData){
+    
+        return instance.post("api/notice/delete", bodyFormData)
+    }
+}
+
+export const modi ={
+    list(bodyFormData){
+    
+        return instance.post("api/notice/update", bodyFormData)
+    }
+}
+
 

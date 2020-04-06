@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+<<<<<<< HEAD
     <Main />
     <!-- <PostModifyDel /> -->
   </div>
@@ -18,6 +19,12 @@ export default {
 };
 </script>
 
+=======
+    <router-view></router-view>
+  </div>
+</template>
+
+>>>>>>> d8048aef5d7d5232987de1377c402c32fa1a7fec
 <style lang="scss">
 * {
   list-style: none;
