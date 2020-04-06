@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <!-- <Main /> -->
-    <PostModifyDel />
+    <Main />
+    <!-- <PostModifyDel /> -->
   </div>
 </template>
 
 <script>
-// import Main from "./views/notice/editor/Main";
-import PostModifyDel from "../src/views/notice/postModityDel/PostModifyDel"
+import Main from "./views/notice/editor/Main";
+// import PostModifyDel from "../src/views/notice/postModityDel/postModifyDel";
 
 export default {
   name: "App",
   components: {
-    // Main,
-    PostModifyDel
+    Main
+    // PostModifyDel
   }
 };
 </script>
@@ -30,5 +30,14 @@ export default {
   letter-spacing: normal;
   margin: 0;
   padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
+
+#app {
+  height: 100%;
 }
 </style>
