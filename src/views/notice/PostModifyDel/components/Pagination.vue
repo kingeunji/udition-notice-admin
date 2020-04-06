@@ -35,14 +35,15 @@ export default {
       // console.log("state", this.page, "clicked", pageNum);
       // 자식 컴포넌트에서 부모 컴포넌트로 보내는 것이 $emit()
       this.$emit("child", this.page);
-      console.log(
-        "부모한테서 내려온 전달받은 실제 들어오는 갯수",
-        this.howManyLists
-      );
-      console.log(
-        "페이지 넘버",
-        Math.ceil(this.totalNoticeCnt / this.howManyLists)
-      );
+      console.log(this.pageNm);
+      // console.log(
+      //   "부모한테서 내려온 전달받은 실제 들어오는 갯수",
+      //   this.howManyLists
+      // );
+      // console.log(
+      //   "페이지 넘버",
+      //   Math.ceil(this.totalNoticeCnt / this.howManyLists)
+      // );
     }
   },
 
