@@ -17,12 +17,9 @@ export const submitWImg = {
     },
     list(bFDWI) {
         console.log(bFDWI)
-        return instance.post('api/notice/saveFile', bFDWI, {
-            headers: {
-            'Content-Type': 'multipart/form-data'
-            }
-            
-        })
+        return instance.post('api/notice/saveFile', bFDWI, {onUploadProgress: uploadEvent => {
+            console.log("upload progress: " + Math.round(uploadEvent.loaded / uploadEvent.total * 100)+'%')
+        } })
     }
 }
 

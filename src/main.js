@@ -19,16 +19,8 @@ Vue.use(ElementUI);
 Vue.use(axios)
 Vue.use(quillEditor, /* { default global options } */)
 
-<<<<<<< HEAD
 Vue.use(ElementUI);
 
-=======
-<<<<<<< HEAD
-Vue.use(ElementUI);
-
-=======
->>>>>>> d8048aef5d7d5232987de1377c402c32fa1a7fec
->>>>>>> cb0d941b4e0d30f049bf11f5c6b22bd5ee8d791c
 new Vue({
   router,
   store,
