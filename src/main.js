@@ -2,7 +2,7 @@ import Vue from 'vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
-import router from './router'
+import router from './router/index.js'
 import store from './store'
 import axios from 'axios'
 import quillEditor from 'vue-quill-editor'
@@ -19,16 +19,6 @@ Vue.use(ElementUI);
 Vue.use(axios)
 Vue.use(quillEditor, /* { default global options } */)
 
-<<<<<<< HEAD
-Vue.use(ElementUI);
-
-=======
-<<<<<<< HEAD
-Vue.use(ElementUI);
-
-=======
->>>>>>> d8048aef5d7d5232987de1377c402c32fa1a7fec
->>>>>>> cb0d941b4e0d30f049bf11f5c6b22bd5ee8d791c
 new Vue({
   router,
   store,
@@ -36,6 +26,7 @@ new Vue({
 }).$mount('#app')
 
 new Vue({
+  router,
   el: '#app',
   render: h => h(App)
 });

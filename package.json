@@ -20,6 +20,7 @@
     "vue": "^2.6.11",
     "vue-quill-editor": "^3.0.4",
     "vue-router": "^3.1.6",
+    "vuedraggable": "^2.23.2",
     "vuejs-paginate": "^2.1.0",
     "vuex": "^3.1.3"
   },
