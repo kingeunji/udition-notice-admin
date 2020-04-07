@@ -58,7 +58,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 $module: "my-modal";
 .#{$module} {
   // This is modal bg

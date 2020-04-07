@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .datail-container {
   width: 500px;
   margin: 0 auto;

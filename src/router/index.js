@@ -5,9 +5,31 @@ import PostModifyDel from "../../src/views/notice/PostModifyDel/PostModifyDel"
 import PolicyClassify from "../views/termsManagement/PolicyClassify"
 // import what from "../views/termsManagement/what"
 
+
 Vue.use(VueRouter);
 
 // route 설정하기
+
+
+// export default new VueRouter({
+//     routes: [
+//         {
+//             path: '/',
+//             name: '',
+//             component:
+//         }
+//     ]
+// })
+// export default new VueRouter({
+//     routes: [
+//         {
+//             path: '/',
+//             name: 'backOffice게시',
+//             component: PostModifyDel
+//         }
+//     ]
+// })
+
 export default new VueRouter({
     routes: [
         {
@@ -26,4 +48,5 @@ export default new VueRouter({
         }
     ]
 })
+
 

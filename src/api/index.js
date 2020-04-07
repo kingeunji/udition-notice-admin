@@ -1,28 +1,25 @@
 import axios from 'axios'
-
 const instance = axios.create({
     baseURL: "http://192.168.0.44:8081/",
 });
 
 export const submitWoImg = {
     list(bodyFormData) {
-        // var bodyFormData = new FormData();
-        // bodyFormData.set('title', title)
-        // bodyFormData.set('noticeType', type)
-        // bodyFormData.set('tts', tts)
-        return instance.get('api/notice/insert', bodyFormData)
+        console.log(bodyFormData)
+        return instance.post('api/notice/insert', bodyFormData)
     }
 }
 
 export const submitWImg = {
-    list(title, type, img, tts) {
-        console.log(title, type, tts)
-        var bodyFormData = new FormData();
-        bodyFormData.set('title', title)
-        bodyFormData.set('noticeType', type)
-        bodyFormData.set('downloadFile', img)
-        bodyFormData.set('tts', tts)
-        return instance.post('api/notice/insert', bodyFormData)
+    list2(bodyFormData2) {
+        console.log(bodyFormData2)
+        return instance.post('api/notice/insert', bodyFormData2)
+    },
+    list(bFDWI) {
+        console.log(bFDWI)
+        return instance.post('api/notice/saveFile', bFDWI, {onUploadProgress: uploadEvent => {
+            console.log("upload progress: " + Math.round(uploadEvent.loaded / uploadEvent.total * 100)+'%')
+        } })
     }
 }
 
