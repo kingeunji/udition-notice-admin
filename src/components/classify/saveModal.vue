@@ -4,7 +4,8 @@
       <div class="bg-white">
         <div class="text-wrapper">
           <p>
-            <strong>분류 삭제</strong>는 되돌릴 수 없습니다. <br />정말
+            <strong>분류 삭제</strong>는 되돌릴 수 없습니다.
+            <br />정말
             진행하시겠습니까?
           </p>
           <div class="button-wrapper">

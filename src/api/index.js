@@ -95,6 +95,7 @@ export const upDateTerms = {
     }
 }
 
+
 // policyClassify
 export const classify = {
     list() {
@@ -106,4 +107,3 @@ export const classifyUpdate = {
         return instance.post('api/category/updateCategory',formData)
     }
 }
-

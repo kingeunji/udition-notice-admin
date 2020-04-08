@@ -4,11 +4,7 @@
       <div class="bg-white">
         <div class="text-wrapper">
           <h3>분류추가</h3>
-          <textarea
-            type="text"
-            placeholder="추가하고 싶은 분류를 입력해주세요."
-            v-model="newTitle"
-          />
+          <textarea type="text" placeholder="추가하고 싶은 분류를 입력해주세요." v-model="newTitle" />
           <div class="button-wrapper">
             <button class="left-btn" @click="closeModal">닫기</button>
             <button class="right-btn" @click="goToAdd">확인</button>
