@@ -96,4 +96,14 @@ export const upDateTerms = {
 }
 
 
-
+// policyClassify
+export const classify = {
+    list() {
+        return instance.post('api/category/mList')
+    }
+}
+export const classifyUpdate = {
+    list(formData) {
+        return instance.post('api/category/updateCategory',formData)
+    }
+}
