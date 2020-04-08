@@ -5,54 +5,36 @@
         <div class="board-container">
           <div class="col-3">
             <h3>활성화된 분류</h3>
-            <draggable
-              class="list-group"
-              :list="list1"
-              group="people"
-              @change="log"
-            >
+            <draggable class="list-group" :list="list1" group="people">
               <div
                 class="list-group-item"
-                v-for="(element, index) in list1"
-                :key="element.name"
-              >
-                {{ element.name }} {{ index }}
-              </div>
+                v-for="element in list1"
+                :key="element.categoryName"
+              >{{ element.categoryName }} ({{ element.termsCnt }})</div>
             </draggable>
           </div>
           <div class="col-3">
             <h3>비활성화 분류</h3>
-            <draggable
-              class="list-group"
-              :list="list2"
-              group="people"
-              @change="log"
-            >
+            <draggable class="list-group" :list="list2" group="people">
               <div
                 class="list-group-item delete"
-                v-for="(element, index) in list2"
-                :key="element.name"
-                :class="{ refresh: element.delete == true }"
-                @click="handle_delete(index)"
-              >
-                {{ element.name }} {{ index }}
-              </div>
+                v-for="(element, i) in list2"
+                :key="element.categoryName"
+                :class="{ refresh: element.deleteBoo == true }"
+                @click="handle_delete(element, i)"
+              >{{ element.categoryName }} ({{ element.termsCnt }})</div>
             </draggable>
           </div>
         </div>
       </div>
       <div class="button-container">
         <div>
-          <button @click="visible = true" class="add btn-style">
-            분류 추가
-          </button>
-          <app-my-modal v-bind:visible="visible" @change="changeModal" />
+          <button @click="visible = true" class="add btn-style">분류 추가</button>
+          <app-my-modal v-bind:visible="visible" @change="changeModal" @input="goToAdd" />
         </div>
         <div>
-          <button @click="visible_save = true" class="save btn-style">
-            저장
-          </button>
-          <saveModal v-bind:visible="visible_save" @change="changeSaveModal" />
+          <button @click="visible_save = true" class="save btn-style">저장</button>
+          <saveModal v-bind:visible="visible_save" @change="changeSaveModal" @save="goToSave" />
         </div>
       </div>
     </div>
@@ -60,9 +42,10 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import myModal from "@/components/classify/my-modal";
-import saveModal from "@/components/classify/saveModal";
-
+import myModal from "./my-modal";
+import saveModal from "./saveModal";
+import { classify } from "@/api/index";
+import { classifyUpdate } from "@/api/index";
 export default {
   name: "two-lists",
   display: "Two Lists",
@@ -71,20 +54,10 @@ export default {
     return {
       visible: false,
       visible_save: false,
-      newTitle: "",
-      delete: false,
-      list1: [
-        { name: "John", id: 1, delete: false },
-        { name: "Joao", id: 2, delete: false },
-        { name: "Jean", id: 3, delete: false },
-        { name: "Gerard", id: 4, delete: false }
-      ],
-      list2: [
-        { name: "Juan", id: 5, delete: false },
-        { name: "Edgard", id: 6, delete: false },
-        { name: "Johnson", id: 7, delete: false }
-      ],
-      click: ""
+      list1: [],
+      list2: [],
+      contents: [],
+      categoryName: ""
     };
   },
   components: {
@@ -94,21 +67,92 @@ export default {
   },
   created() {
     window.addEventListener("beforeunload", this.handleBrowser);
+    this.fetchData();
+  },
+  watch: {
+    list2() {
+      this.handle_delete();
+    }
   },
   methods: {
     handleBrowser: function handleBrowser(e) {
       e.preventDefault();
       e.returnValue = "";
     },
-    handle_delete(i) {
-      console.log("선택 인덱스", i);
-      console.log("상태", this.delete);
-      this.click = i;
-      if (this.list2[i].delete == false) {
-        this.list2[i].delete = true;
-      } else {
-        this.list2[i].delete = false;
+    async fetchData() {
+      const res = await classify.list();
+      this.contents = res.data.result;
+      this.contents_modify = this.contents;
+      for (var i = 0; i < this.contents.length; i++) {
+        if (this.contents[i].isDelete == 0) {
+          this.list1.push(this.contents[i]);
+        } else if (this.contents[i].isDelete == 1) {
+          this.list2.push(this.contents[i]);
+        }
       }
+    },
+    // 이미지 토글버튼 & 약관 카테고리 삭제
+    handle_delete(el, i) {
+      if (this.list2[i].deleteBoo == true) {
+        this.list2[i].deleteBoo = false;
+        this.list2[i].status = -1;
+      } else {
+        this.list2[i].deleteBoo = true;
+        this.list2[i].status = 2;
+      }
+    },
+    // 저장버튼
+    async goToSave(val) {
+      //list1
+      for (let i = 0; i < this.list1.length; i++) {
+        this.list1[i].isDelete = 0;
+        this.list1[i].sortNo = i + 1;
+        if (this.list1[i].status == -1) {
+          this.list1[i].status = 1;
+        }
+      }
+      await this.fetchSave(val, this.list1);
+      //list2
+      for (let i = 0; i < this.list2.length; i++) {
+        this.list2[i].isDelete = 1;
+        this.list2[i].sortNo = this.list1.length + i + 1;
+        if (this.list2[i].status == -1) {
+          this.list2[i].status = 1;
+        }
+      }
+      await this.fetchSave(val, this.list2);
+      window.location.reload();
+      alert("저장 완료");
+      this.visible_save = val;
+    },
+    async fetchSave(val, arr) {
+      console.log(arr);
+      for (let i = 0; i < arr.length; i++) {
+        var formData = new FormData();
+        formData.set("categoryNo", arr[i].categoryNo);
+        formData.set("status", arr[i].status);
+        formData.set("categoryName", arr[i].categoryName);
+        formData.set("isDelete", arr[i].isDelete);
+        formData.set("sortNo", arr[i].sortNo);
+        const res = await classifyUpdate.list(formData);
+        console.log("res", res);
+      }
+    },
+    goToAdd(cnt) {
+      if (this.list2.length > 0) {
+        var no = this.list2[this.list2.length - 1].categoryNo + 1;
+        var sort = this.list2.length + 1;
+      }
+      let content = {
+        categoryNo: no ? no : 1,
+        categoryName: cnt,
+        termsCnt: 0,
+        status: 0,
+        isDelete: 1,
+        sortNo: sort ? sort : 1,
+        deleteBoo: "false"
+      };
+      this.list2.push(content);
     },
     changeModal(val) {
       this.visible = val;
@@ -119,21 +163,19 @@ export default {
   }
 };
 </script>
-
-<style scoped lang="scss">
+<style lang="scss">
 .datail-container {
   width: 500px;
   margin: 0 auto;
-
   .section {
     .board-container {
       h3 {
         margin-bottom: 20px;
+        font-weight: bold;
       }
-
       .col-3:nth-child(2) {
         h3 {
-          margin-top: 20px;
+          margin-top: 40px;
         }
       }
       .list-group-item {
@@ -142,11 +184,9 @@ export default {
         border: 1px solid #333;
         cursor: pointer;
         background-size: 15px 15px;
-
         &.delete {
           background: url("../../assets/close_r.png") no-repeat 96% center;
         }
-
         &.refresh {
           background: url("../../assets/refresh.png") no-repeat 96% center;
           text-decoration: line-through;
@@ -154,12 +194,10 @@ export default {
       }
     }
   }
-
   .button-container {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
-
     .btn-style {
       width: 100px;
       padding: 10px 0;
@@ -168,7 +206,6 @@ export default {
       background: none;
       font-size: 13px;
       cursor: pointer;
-
       &:hover {
         background: #e5e5e5;
         font-weight: 700;
