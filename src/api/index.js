@@ -44,6 +44,12 @@ export const modi ={
     }
 }
 
+export const getWholeData = {
+    list(bodyFormData){
+        return instance.post("api/notice/detail",bodyFormData)
+    }
+}
+
 // 이용약관 데이터 불러오는 API
 
 export const getTerms = {
@@ -67,6 +73,9 @@ export const postTerms = {
         return instance.post("api/terms/unblock",bodyFormData)
     }
 }
+
+
+
 
 //수정
 

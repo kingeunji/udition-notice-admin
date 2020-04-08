@@ -51,7 +51,7 @@
               </td>
               <!-- 게시, 수정, 게시중단 -->
               <td>
-                <div v-if="data.isDelete == 0" class="buttonBox">
+                <div v-if="data.isDelete == 1" class="buttonBox">
                   <button @click="postTerms(data.termsNo)">게시</button>
                   <button @click="modiTerms(data.termsNo)">수정</button>
                 </div>
@@ -77,7 +77,7 @@
 
 <script>
 import Pagination from "@/views/notice/PostModifyDel/components/Pagination";
-import { getTerms, stopPost, postTerms, upDateTerms } from "@/api/index.js";
+import { getTerms, stopPost, postTerms } from "@/api/index.js";
 
 export default {
   name: "ManagementCtn",
@@ -105,9 +105,10 @@ export default {
       bodyFormData.append("pageSize", this.PAGESIZE);
       bodyFormData.append("categoryNo", this.category);
       const res = await getTerms.list(bodyFormData);
-      this.gotLists = res.data.result.reverse();
+      this.gotLists = res.data.result;
       // 마지막 offset
       this.totalNoticeCnt = res.data.result[0].termsCnt;
+      console.log("바보야");
     },
     //게시중단 API 통신
     //게시중단
@@ -119,20 +120,25 @@ export default {
       this.fetchData();
     },
     //게시
-    async postTerms(stopNum) {
-      console.log(stopNum);
+    async postTerms(postNum) {
+      console.log(postNum);
       const bodyFormData = new FormData();
-      bodyFormData.append("termsNo", stopNum);
+      bodyFormData.append("termsNo", postNum);
       await postTerms.list(bodyFormData);
       this.fetchData();
     },
     //수정
-    async modiTerms(stopNum) {
-      console.log(stopNum);
-      const bodyFormData = new FormData();
-      bodyFormData.append("termsNo", stopNum);
-      await upDateTerms.list(bodyFormData);
-      this.fetchData();
+    //여기는 페이지 전환, 해당 termsNum에 해당하는 자료를 수정페이지로 넘겨줘야한다.
+    async modiTerms(updtNum) {
+      console.log(updtNum);
+      for (let i in this.gotLists) {
+        if (this.gotLists[i].termsNo === updtNum) {
+          //해당 데이터 부모로 올리기
+          this.$emit("modifiedData", this.gotLists[i]);
+          //수정페이지로 화면전환(일단 주석)
+          this.$router.push("/writingNotice");
+        }
+      }
     },
 
     //카테고리 넘버 저장
@@ -143,6 +149,14 @@ export default {
     parents(pageNum) {
       //페이지네이션에서 넘어온 페이제 넘버 -1
       this.pageNum = pageNum - 1;
+    }
+  },
+  watch: {
+    pageNum() {
+      this.fetchData();
+    },
+    category() {
+      this.fetchData();
     }
   }
 };
