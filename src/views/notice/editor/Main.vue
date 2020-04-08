@@ -28,7 +28,6 @@
           name="newtitle"
           v-model="newTitle"
           maxlength="50"
-          @keyup.enter="addTitle"
         />
       </div>
       <!-- 에디터 컴포넌트 가져오기 -->
@@ -59,7 +58,9 @@
             <p>기존에 작성한 글이 모두 저장됩니다.</p>
             <div class="button-wrapper">
               <button class="left-btn" @click="handle_save">보류</button>
-              <button class="right-btn" @click="goToSave">저장</button>
+              <button class="right-btn" @click="goToSave">
+                저장
+              </button>
             </div>
           </div>
         </div>
@@ -160,6 +161,7 @@ export default {
         );
         const res2 = await submitWImg.list2(bodyFormData2);
         console.log("모든 데이터 끝!", res2);
+        this.$router.push("/");
       }
     },
 
@@ -182,7 +184,6 @@ export default {
   position: relative;
   background-color: #ebebeb;
   padding: 5%;
-
   width: 100vw;
   height: 100vh;
   .wrapper {

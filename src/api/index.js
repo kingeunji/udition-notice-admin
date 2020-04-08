@@ -3,6 +3,8 @@ const instance = axios.create({
     baseURL: "http://192.168.0.44:8081/",
 });
 
+//에디터 페이지
+
 export const submitWoImg = {
     list(bodyFormData) {
         console.log(bodyFormData)
@@ -23,8 +25,16 @@ export const submitWImg = {
     }
 }
 
-//공지사항
 
+//약관 작성
+
+export const writingNotice = {
+    list(bodyFormData) {
+        return instance.post('api/terms/insert', bodyFormData)
+    }
+}
+
+//공지사항
 
 export const listsPage ={
     list(bodyFormData){

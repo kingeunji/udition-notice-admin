@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .pagination-container {
   width: 100%;
   padding: 20px 0;
