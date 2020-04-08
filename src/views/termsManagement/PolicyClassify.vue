@@ -20,6 +20,7 @@
       <div class="content-container">
         <ManagementCtn v-if="this.selected == 1" @modifiedData="modifiedData" />
         <classifyDetail v-else-if="this.selected == 2" />
+        <writingNotice v-else-if="this.selected == 3" />
       </div>
     </div>
   </div>
@@ -28,12 +29,15 @@
 <script>
 import classifyDetail from "@/components/classify/classifyDetail";
 import ManagementCtn from "@/components/classify/ManagementCtn";
+import writingNotice from "@/components/classify/writingNotice";
+
 export default {
   name: "",
   props: {},
   components: {
     classifyDetail,
-    ManagementCtn
+    ManagementCtn,
+    writingNotice
   },
   // 초기화, 기본 값 설정
   data() {
