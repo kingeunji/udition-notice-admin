@@ -82,7 +82,7 @@
                       </button>
                     </td>
                     <td>
-                      <button @click="delModi(false, data.noticeNo)">
+                      <button @click="delModi(false, data.noticeNo, data.tts)">
                         수정
                       </button>
                     </td>
@@ -107,9 +107,8 @@
 
 <script>
 import Pagination from "./components/Pagination";
-import { listsPage } from "../../../api/index";
-import { del } from "../../../api/index";
-import { modi } from "../../../api/index";
+import { listsPage, del, getWholeData } from "../../../api/index";
+import EventBus from "@/eventBus/eventBus";
 
 export default {
   name: "PostModifyDel",
@@ -124,7 +123,9 @@ export default {
       gotLists: [],
       //페이지 요청 사이즈
       PAGESIZE: 10,
-      totalNoticeCnt: ""
+      totalNoticeCnt: "",
+      //자식한테서 올라온 수정될 데이터
+      modiList: {}
     };
   },
   created() {
@@ -159,12 +160,11 @@ export default {
       this.gotLists = res.data.result;
       // 마지막 offset
       this.totalNoticeCnt = res.data.result[0].noticeCnt;
-      console.log("헤이헤이헤이", res.data.result[0].noticeCnt);
-      console.log("전체 데이터", res);
-      console.log("페이지 요청 사이즈", this.PAGESIZE);
-      console.log("실제로 들어오는 갯수", this.gotLists.length);
-      // axios.post('', form )
-      // API GET
+      // console.log("헤이헤이헤이", res.data.result[0].noticeCnt);
+      // console.log("전체 데이터", res);
+      // console.log("페이지 요청 사이즈", this.PAGESIZE);
+      // console.log("실제로 들어오는 갯수", this.gotLists.length);
+      //
     },
     parents(pageNum) {
       this.pageNum = pageNum - 1;
@@ -175,10 +175,12 @@ export default {
       //   this.pageNum
       // );
     },
+    //에디터로 이동
     go() {
       console.log("hey");
       this.$router.push("/main");
     },
+    //수정삭제
     async delModi(mode, noticeNo) {
       const bodyFormData = new FormData();
       // 검색요청 페이지
@@ -195,15 +197,21 @@ export default {
           return false;
         }
       } else {
-        const res = await modi.list(bodyFormData);
-        console.log("modify", res);
+        this.getModiData(noticeNo);
+        console.log("받은 리스트,", this.gotLists);
+        //페이지 이동
+        this.go();
       }
+    },
+    // 수정데이터 불러옴 & 해당 noticeNo에 해당하는 정보 state에 저장(modiList)
+    async getModiData(noticeNum) {
+      const bodyFormData = new FormData();
+      bodyFormData.append("noticeNo", noticeNum);
+      bodyFormData.append("noticeType", this.category);
+      const res = await getWholeData.list(bodyFormData);
+      //EventBus
+      EventBus.$emit("pushData", res.data.result);
     }
-    // ,
-    // goNoticePage(pageNumer) {
-    //   console.log("페이지 고유 번호", pageNumer);
-    //   this.$router.push(`/notice-datail:id=${pageNumer}`;
-    // }
   }
 };
 </script>

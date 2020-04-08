@@ -73,6 +73,7 @@ import Editor from "../../../components/Editor";
 import ImgUpload from "../../../components/ImgUpload";
 import { submitWImg } from "../../../api/index";
 import { submitWoImg } from "../../../api/index";
+import EventBus from "@/eventBus/eventBus";
 
 export default {
   components: {
@@ -88,6 +89,7 @@ export default {
       content: "",
       cancle_modal: false,
       save_modal: false,
+      pushedData: {},
       options: [
         {
           id: 1,
@@ -110,6 +112,15 @@ export default {
       ],
       value: ""
     };
+  },
+  created() {
+    EventBus.$on("pushData", payload => {
+      this.pushedData = payload[0];
+      // this.categoryNum = payload[0].noticeType;
+      // this.image = payload[0].image;
+      this.newTitle = payload[0].title;
+      // this.content = payload[0].tts;
+    });
   },
   methods: {
     handle_cancle() {

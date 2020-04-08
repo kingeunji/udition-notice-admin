@@ -18,12 +18,13 @@
         </ul>
       </div>
       <div class="content-container">
-        <ManagementCtn v-if="this.selected == 1" />
+        <ManagementCtn v-if="this.selected == 1" @modifiedData="modifiedData" />
         <classifyDetail v-else-if="this.selected == 2" />
       </div>
     </div>
   </div>
 </template>
+
 <script>
 import classifyDetail from "@/components/classify/classifyDetail";
 import ManagementCtn from "@/components/classify/ManagementCtn";
@@ -37,13 +38,20 @@ export default {
   // 초기화, 기본 값 설정
   data() {
     return {
-      selected: 1
+      selected: 1,
+      //자식한테서 올라온 수정될 데이터
+      modiData: {}
     };
   },
   methods: {
     fetchData(sel) {
       console.log("카테고리", sel);
       this.selected = sel;
+    },
+    //자식한테서 올라온 수정될 데이터
+    modifiedData(data) {
+      this.modiData = data;
+      console.log(data, this.modiData);
     }
   }
 };
