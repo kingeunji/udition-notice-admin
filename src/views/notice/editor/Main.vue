@@ -18,7 +18,10 @@
         </el-select>
       </div>
       <!-- 썸네일 업로드 등장-->
-      <ImgUpload @update-thumbnailImg="onFileSelected" />
+      <ImgUpload
+        @update-thumbnailImg="onFileSelected"
+        :thumnailImg="pushedData.image"
+      />
       <!-- 제목 input field 등장 -->
       <div class="title-wrapper">
         <div class="title">제목</div>
@@ -116,11 +119,14 @@ export default {
   },
   created() {
     EventBus.$on("pushData", payload => {
+      console.log(payload);
+      console.log("태그", payload[0].image);
+
       this.pushedData = payload[0];
       // this.categoryNum = payload[0].noticeType;
       // this.image = payload[0].image;
       this.newTitle = payload[0].title;
-      // this.content = payload[0].tts;
+      this.content = payload[0].tts;
     });
   },
   methods: {

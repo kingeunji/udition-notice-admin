@@ -6,10 +6,18 @@
 </template>
 
 <script>
+import { submitWImg } from "@/api/index";
+
 export default {
+  props: {
+    thumnailImg: {
+      required: false
+    }
+  },
   data() {
     return {
-      selectedFile: null
+      selectedFile: null,
+      forModiImg: this.props.thumnailImg
     };
   },
   methods: {
@@ -21,6 +29,19 @@ export default {
         this.selectedFile,
         this.selectedFile.name
       );
+    },
+    async goToSave() {
+      var bFDWI = new FormData();
+      bFDWI.append("downloadFile", this.forModiImg);
+      console.log("이미지 이름: ", this.forModiImg);
+      console.log("이미지야 들어와라");
+      const res = await submitWImg.list(bFDWI);
+      console.log("이미지 정보: ", res.data.result.image);
+    }
+  },
+  watch: {
+    forModiImg() {
+      this.goToSave();
     }
   }
 };

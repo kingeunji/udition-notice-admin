@@ -18,9 +18,17 @@
         </ul>
       </div>
       <div class="content-container">
-        <ManagementCtn v-if="this.selected == 1" @modifiedData="modifiedData" />
-        <classifyDetail v-else-if="this.selected == 2" />
-        <writingNotice v-else-if="this.selected == 3" />
+        <ManagementCtn
+          v-if="selected == 1"
+          @modifiedData="modifiedData"
+          @componentChange="componentChange"
+        />
+        <classifyDetail v-else-if="selected == 2" />
+        <writingNotice
+          v-else-if="selected == 3"
+          :forModi="modiData"
+          :reset="selected"
+        />
       </div>
     </div>
   </div>
@@ -43,8 +51,8 @@ export default {
   data() {
     return {
       selected: 1,
-      //자식한테서 올라온 수정될 데이터
-      modiData: {}
+      //ManagementCtn한테서 올라온 수정될 데이터
+      modiData: null
     };
   },
   methods: {
@@ -52,10 +60,16 @@ export default {
       console.log("카테고리", sel);
       this.selected = sel;
     },
-    //자식한테서 올라온 수정될 데이터
+    //ManagementCtn한테서 올라온 수정될 데이터들
     modifiedData(data) {
       this.modiData = data;
-      console.log(data, this.modiData);
+      console.log(
+        "ManagementCtn한테서 올라온 수정될 데이터들 :",
+        this.modiData
+      );
+    },
+    componentChange(sel) {
+      this.selected = sel;
     }
   }
 };

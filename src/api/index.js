@@ -95,6 +95,23 @@ export const upDateTerms = {
     }
 }
 
+//수정버튼 클릭시 이동된 컴포넌트에서 해당 데이터 불러오는 API
+export const detailTerm = {
+    list(bodyFormData){
+        return instance.post("api/terms/detail",bodyFormData)
+    }
+}
+
+//수정된 내용 post하는 API
+export const updatTerm = {
+    list(bodyFormData){
+        return instance.post("api/terms/update",bodyFormData)
+    }
+}
+
+
+
+
 
 // policyClassify
 export const classify = {

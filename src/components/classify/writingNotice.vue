@@ -3,8 +3,14 @@
     <!-- 카테고리 선택란 등장 -->
     <div class="categoryWrapper">
       <div class="left-text">분류</div>
-      <select class="selectOption" v-model="value" @change="changeCategory(value)">
-        <option v-for="item in options" :key="item.value" :value="item.value">{{ item.label }}</option>
+      <select
+        class="selectOption"
+        v-model="value"
+        @change="changeCategory(value)"
+      >
+        <option v-for="item in options" :key="item.value" :value="item.value">{{
+          item.label
+        }}</option>
       </select>
     </div>
     <!-- 버전 작성란 등장 -->
@@ -24,9 +30,13 @@
 
 <script>
 import Editor from "../Editor";
-import { writingNotice } from "../../api/index";
+import { writingNotice, detailTerm, updatTerm } from "../../api/index";
 
 export default {
+  props: {
+    forModi: Object,
+    reset: Number
+  },
   components: {
     Editor
   },
@@ -38,6 +48,7 @@ export default {
       firstName: "Dasol",
       lastName: "Jong",
       fullName: "",
+      upDatedVersion: this.forModi.version,
       options: [
         {
           id: 1,
@@ -58,10 +69,29 @@ export default {
           label: "개인정보 처리방침"
         }
       ],
-      value: ""
+      value: "",
+      dbLoad: false
     };
   },
+  created() {
+    if (this.forModi) {
+      // 수정인 경우
+      this.fetchData();
+    }
+  },
   methods: {
+    async fetchData() {
+      let formData = new FormData();
+      formData.append("termsNo", this.forModi);
+      const response = await detailTerm.list(formData);
+      console.log(response);
+
+      this.value = response.data.result[0].categoryNo;
+      this.newVersion = response.data.result[0].version;
+      this.content = response.data.result[0].contents;
+
+      this.dbLoad = true;
+    },
     changeCategory(value) {
       console.log("카테고리 번호: ", value);
       this.categoryNum = value;
@@ -75,10 +105,26 @@ export default {
       bodyFormData.append("version", this.newVersion);
       bodyFormData.append("contents", this.content);
       console.log(this.categoryNum, this.newVersion, this.content);
-      const res = await writingNotice.list(bodyFormData);
-      console.log("저장완료: ", res);
-      this.$router.push("/terms");
+
+      if (this.forModi === null) {
+        const res = await writingNotice.list(bodyFormData);
+        console.log("저장완료: ", res);
+        this.$router.push("/terms");
+      } else {
+        console.log("수정완료: ", res);
+        const res = await updatTerm.list(bodyFormData);
+      }
       window.location.reload();
+      console.log(this.forModi.version);
+    }
+  },
+  watch: {
+    upDatedVersion() {
+      console.log("hey");
+      this.newVersion = this.upDatedVersion;
+    },
+    dbLoad(val) {
+      console.log(`watch DBLOAD ${val} `);
     }
   }
 };
