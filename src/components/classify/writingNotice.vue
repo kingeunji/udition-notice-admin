@@ -8,9 +8,9 @@
         v-model="value"
         @change="changeCategory(value)"
       >
-        <option v-for="item in options" :key="item.value" :value="item.value">{{
-          item.label
-        }}</option>
+        <option v-for="item in options" :key="item.value" :value="item.value">
+          {{ item.label }}
+        </option>
       </select>
     </div>
     <!-- 버전 작성란 등장 -->
@@ -34,7 +34,7 @@ import { writingNotice, detailTerm, updatTerm } from "../../api/index";
 
 export default {
   props: {
-    forModi: Object,
+    forModi: Number,
     reset: Number
   },
   components: {
@@ -85,11 +85,10 @@ export default {
       formData.append("termsNo", this.forModi);
       const response = await detailTerm.list(formData);
       console.log(response);
-
       this.value = response.data.result[0].categoryNo;
+      // this.categoryNum = response.data.result[0].categoryNum;
       this.newVersion = response.data.result[0].version;
       this.content = response.data.result[0].contents;
-
       this.dbLoad = true;
     },
     changeCategory(value) {
@@ -99,6 +98,7 @@ export default {
     onEditorChange(content) {
       this.content = content;
     },
+
     async goToSave() {
       var bodyFormData = new FormData();
       bodyFormData.append("categoryNo", this.categoryNum);
@@ -107,12 +107,14 @@ export default {
       console.log(this.categoryNum, this.newVersion, this.content);
 
       if (this.forModi === null) {
-        const res = await writingNotice.list(bodyFormData);
-        console.log("저장완료: ", res);
+        // console.log("저장완료: ", res);
+        // const res =
+        await writingNotice.list(bodyFormData);
         this.$router.push("/terms");
       } else {
-        console.log("수정완료: ", res);
-        const res = await updatTerm.list(bodyFormData);
+        // console.log("수정완료: ", res);
+        // const res =
+        await updatTerm.list(bodyFormData);
       }
       window.location.reload();
       console.log(this.forModi.version);

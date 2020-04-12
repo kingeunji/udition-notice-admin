@@ -63,12 +63,10 @@ export default {
     //ManagementCtn한테서 올라온 수정될 데이터들
     modifiedData(data) {
       this.modiData = data;
-      console.log(
-        "ManagementCtn한테서 올라온 수정될 데이터들 :",
-        this.modiData
-      );
+      console.log("ManagementCtn한테서 올라온 수정될 termsNo :", this.modiData);
     },
     componentChange(sel) {
+      console.log(sel);
       this.selected = sel;
     }
   }
