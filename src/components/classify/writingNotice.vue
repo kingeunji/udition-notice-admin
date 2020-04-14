@@ -4,13 +4,14 @@
     <div class="categoryWrapper">
       <div class="left-text">분류</div>
       <select class="selectOption" v-model="value" @change="changeCategory(value)">
+        <option disabled value>::필수선택::</option>
         <option v-for="item in options" :key="item.value" :value="item.value">{{ item.label }}</option>
       </select>
     </div>
     <!-- 버전 작성란 등장 -->
     <div class="versionWrapper">
       <div class="left-text">버전</div>
-      <input class="versionInput" type="text" v-model="newVersion" />
+      <input class="versionInput" type="text" v-model="newVersion" placeholder="필수 입력칸 입니다." />
     </div>
     <!-- 에디터 등장 -->
     <Editor @update-content="onEditorChange" />
@@ -33,11 +34,9 @@ export default {
   data() {
     return {
       categoryNum: "",
-      newVersion: "",
       content: "",
-      firstName: "Dasol",
-      lastName: "Jong",
       fullName: "",
+      newVersion: "",
       options: [
         {
           id: 1,
@@ -70,15 +69,23 @@ export default {
       this.content = content;
     },
     async goToSave() {
-      var bodyFormData = new FormData();
-      bodyFormData.append("categoryNo", this.categoryNum);
-      bodyFormData.append("version", this.newVersion);
-      bodyFormData.append("contents", this.content);
-      console.log(this.categoryNum, this.newVersion, this.content);
-      const res = await writingNotice.list(bodyFormData);
-      console.log("저장완료: ", res);
-      this.$router.push("/terms");
-      window.location.reload();
+      if (!this.categoryNum) {
+        alert("카테고리를 선택하세요.");
+      } else if (!this.newVersion) {
+        alert("버전을 입력하세요.");
+      } else if (!this.content) {
+        alert("컨텐츠를 입력하세요.");
+      } else {
+        var bodyFormData = new FormData();
+        bodyFormData.append("categoryNo", this.categoryNum);
+        bodyFormData.append("version", this.newVersion);
+        bodyFormData.append("contents", this.content);
+        console.log(this.categoryNum, this.newVersion, this.content);
+        const res = await writingNotice.list(bodyFormData);
+        console.log("저장완료: ", res);
+        this.$router.push("/terms");
+        window.location.reload();
+      }
     }
   }
 };
@@ -107,10 +114,12 @@ export default {
     border: 1px solid #cccccc;
     margin-bottom: 10px;
     .versionInput {
+      border: 1px solid #cccccc;
       font-size: 14px;
       width: 300px;
       height: 40px;
       border-radius: 5px;
+      padding-left: 10px;
     }
   }
 }
