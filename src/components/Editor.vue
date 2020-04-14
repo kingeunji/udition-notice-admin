@@ -38,12 +38,7 @@ Quill.register("modules/imageDrop", ImageDrop);
 Quill.register("modules/imageResize", ImageResize);
 
 export default {
-  props: {
-    text: {
-      type: String,
-      required: true
-    }
-  },
+  props: {},
   data() {
     return {
       editorOption: {
@@ -52,8 +47,12 @@ export default {
           imageDrop: true,
           imageResize: true
         }
-      }
+      },
+      content: ""
     };
+  },
+  created() {
+    this.$refs.myQuillEditor.innerHTML = this.content;
   },
   methods: {
     onEditorChange() {

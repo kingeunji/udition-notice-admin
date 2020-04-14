@@ -134,9 +134,10 @@ export default {
       for (let i in this.gotLists) {
         if (this.gotLists[i].termsNo === updtNum) {
           //해당 데이터 부모로 올리기
-          this.$emit("modifiedData", this.gotLists[i]);
+          this.$emit("modifiedData", this.gotLists[i].termsNo);
           //수정페이지로 화면전환(일단 주석)
-          this.$router.push("/writingNotice");
+          // this.$router.push("/writingNotice");
+          this.$emit("componentChange", 3);
         }
       }
     },
