@@ -22,7 +22,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import Editor from "../Editor";
 import { writingNotice } from "../../api/index";
@@ -57,6 +56,7 @@ export default {
           label: "개인정보 처리방침"
         }
       ],
+
       value: ""
     };
   },
@@ -70,7 +70,7 @@ export default {
     },
     async goToSave() {
       if (!this.categoryNum) {
-        alert("카테고리를 선택하세요.");
+        alert("분류를 선택하세요.");
       } else if (!this.newVersion) {
         alert("버전을 입력하세요.");
       } else if (!this.content) {

@@ -85,10 +85,6 @@ export default {
       totalNoticeCnt: 0
     };
   },
-  created() {
-    this.category = 0;
-    this.fetchData();
-  },
   methods: {
     //게시물 불러오는 API통신
     async fetchData() {
