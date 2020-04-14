@@ -10,7 +10,9 @@
                 class="list-group-item"
                 v-for="element in list1"
                 :key="element.categoryName"
-              >{{ element.categoryName }} ({{ element.termsCnt }})</div>
+              >
+                {{ element.categoryName }} ({{ element.termsCnt }})
+              </div>
             </draggable>
           </div>
           <div class="col-3">
@@ -22,19 +24,33 @@
                 :key="element.categoryName"
                 :class="{ refresh: element.deleteBoo == true }"
                 @click="handle_delete(element, i)"
-              >{{ element.categoryName }} ({{ element.termsCnt }})</div>
+              >
+                {{ element.categoryName }} ({{ element.termsCnt }})
+              </div>
             </draggable>
           </div>
         </div>
       </div>
       <div class="button-container">
         <div>
-          <button @click="visible = true" class="add btn-style">분류 추가</button>
-          <app-my-modal v-bind:visible="visible" @change="changeModal" @input="goToAdd" />
+          <button @click="visible = true" class="add btn-style">
+            분류 추가
+          </button>
+          <app-my-modal
+            v-bind:visible="visible"
+            @change="changeModal"
+            @input="goToAdd"
+          />
         </div>
         <div>
-          <button @click="visible_save = true" class="save btn-style">저장</button>
-          <saveModal v-bind:visible="visible_save" @change="changeSaveModal" @save="goToSave" />
+          <button @click="visible_save = true" class="save btn-style">
+            저장
+          </button>
+          <saveModal
+            v-bind:visible="visible_save"
+            @change="changeSaveModal"
+            @save="goToSave"
+          />
         </div>
       </div>
     </div>

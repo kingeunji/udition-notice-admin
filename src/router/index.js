@@ -47,6 +47,7 @@ export default new VueRouter({
             path:'/terms',
             component:PolicyClassify
         }
+
     ]
 })
 
