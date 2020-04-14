@@ -4,11 +4,7 @@
       <!-- 카테고리 선택란 등장 -->
       <div class="category">
         <div class="left-text">구분</div>
-        <el-select
-          v-model="value"
-          placeholder="::필수선택::"
-          @change="changeCategory(value)"
-        >
+        <el-select v-model="value" placeholder="::필수선택::" @change="changeCategory(value)">
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -31,6 +27,7 @@
           name="newtitle"
           v-model="newTitle"
           maxlength="50"
+          placeholder="필수 입력값 입니다."
         />
       </div>
       <!-- 에디터 컴포넌트 가져오기 -->
@@ -61,9 +58,7 @@
             <p>기존에 작성한 글이 모두 저장됩니다.</p>
             <div class="button-wrapper">
               <button class="left-btn" @click="handle_save">보류</button>
-              <button class="right-btn" @click="goToSave">
-                저장
-              </button>
+              <button class="right-btn" @click="goToSave">저장</button>
             </div>
           </div>
         </div>
@@ -89,7 +84,6 @@ export default {
       categoryNum: "",
       selectedFile: "",
       image: "",
-      newTitle: "",
       content: "",
       cancle_modal: false,
       save_modal: false,
@@ -138,7 +132,13 @@ export default {
       }
     },
     handle_save() {
-      if (this.save_modal == false) {
+      if (!this.categoryNum == 1) {
+        alert("카테고리를 선택하세요.");
+      } else if (!this.newTitle) {
+        alert("제목을 입력하세요.");
+      } else if (!this.content) {
+        alert("컨텐츠를 입력하세요.");
+      } else if (this.save_modal == false) {
         this.save_modal = true;
       } else {
         this.save_modal = false;
@@ -153,6 +153,7 @@ export default {
         console.log(this.categoryNum, this.newTitle, this.content);
         const res = await submitWoImg.list(bodyFormData);
         console.log("이미지 없다", res);
+        this.$router.push("/");
       } else {
         // 썸네일 이미지 보내기
         var bFDWI = new FormData();

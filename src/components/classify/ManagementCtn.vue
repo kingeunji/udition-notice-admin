@@ -38,17 +38,11 @@
               <!-- 분류 -->
               <td>{{ data.categoryName }}</td>
               <!-- 버전 -->
-              <td>
-                {{ data.version }}
-              </td>
+              <td>{{ data.version }}</td>
               <!-- 최종 작성일 -->
-              <td>
-                {{ data.createDate.slice(0, 10) }}
-              </td>
+              <td>{{ data.createDate.slice(0, 10) }}</td>
               <!-- 최종수정일 -->
-              <td>
-                {{ data.modifiedDate ? data.modifiedDate.slice(0, 10) : "-" }}
-              </td>
+              <td>{{ data.modifiedDate ? data.modifiedDate.slice(0, 10) : "-" }}</td>
               <!-- 게시, 수정, 게시중단 -->
               <td>
                 <div v-if="data.isDelete == 1" class="buttonBox">
@@ -56,9 +50,7 @@
                   <button @click="modiTerms(data.termsNo)">수정</button>
                 </div>
                 <div v-else>
-                  <button @click="postStop(data.termsNo)">
-                    게시중단
-                  </button>
+                  <button @click="postStop(data.termsNo)">게시중단</button>
                 </div>
               </td>
             </tr>
@@ -108,7 +100,6 @@ export default {
       this.gotLists = res.data.result;
       // 마지막 offset
       this.totalNoticeCnt = res.data.result[0].termsCnt;
-      console.log("바보야");
     },
     //게시중단 API 통신
     //게시중단
