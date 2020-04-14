@@ -14,10 +14,7 @@
         </el-select>
       </div>
       <!-- 썸네일 업로드 등장-->
-      <ImgUpload
-        @update-thumbnailImg="onFileSelected"
-        :thumnailImg="pushedData.image"
-      />
+      <ImgUpload @update-thumbnailImg="onFileSelected" :thumnailImg="pushedData.image" />
       <!-- 제목 input field 등장 -->
       <div class="title-wrapper">
         <div class="title">제목</div>
@@ -38,6 +35,7 @@
         <button class="right-btn" @click="handle_save">저장</button>
       </div>
       <!-- 취소 모달 등장-->
+      <!-- 만약 cancle_monal이 true일 경우, 해당 모달을 실행 -->
       <div class="cover-bg" v-if="cancle_modal">
         <div class="bg-white">
           <div class="text-wrapper">
@@ -51,6 +49,7 @@
         </div>
       </div>
       <!-- 저장 모달 등장 -->
+      <!-- 만약 save_modal이 true일 경우, 해당 모달을 실행 -->
       <div class="cover-bg" v-if="save_modal">
         <div class="bg-white">
           <div class="text-wrapper">
